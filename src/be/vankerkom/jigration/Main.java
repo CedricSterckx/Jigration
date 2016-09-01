@@ -1,7 +1,7 @@
 package be.vankerkom.jigration;
 
-import be.vankerkom.jigration.Builders.Builder;
-import be.vankerkom.jigration.Builders.MySQLBuilder;
+import be.vankerkom.jigration.builders.Builder;
+import be.vankerkom.jigration.builders.SQLiteBuilder;
 import be.vankerkom.jigration.schema.Blueprint;
 import be.vankerkom.jigration.schema.Schema;
 import be.vankerkom.jigration.schema.SchemaBuilder;
@@ -26,7 +26,8 @@ public class Main {
         System.out.println("Creating new builder...");
         Builder activeBuilder = null;
         try {
-            activeBuilder = new MySQLBuilder("127.0.0.1:3306", "jigration", "root", "");
+            //activeBuilder = new MySQLBuilder("127.0.0.1:3306", "jigration", "root", "");
+            activeBuilder = new SQLiteBuilder("jigration.db");
         } catch (Exception e) {
             System.err.println("Failed to initialize the connection.");
             e.printStackTrace();

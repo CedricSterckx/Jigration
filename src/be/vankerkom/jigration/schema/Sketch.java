@@ -5,44 +5,72 @@ package be.vankerkom.jigration.schema;
  */
 public class Sketch {
 
+    private String columnName;
+    private String columnType;
+
+    // TODO Store the properties in it's own collection.
+
+    public Sketch(String columnName, String columnType) {
+        this.columnName = columnName;
+        this.columnType = columnType;
+    }
 
     // Represents a column entry for the database.
 
-    public void unsigned() {
+    public Sketch unsigned() {
 
         // Makes the value unsigned.
 
+        return this;
+
     }
 
-    public void value(Object defaultValue) {
+    public Sketch value(Object defaultValue) {
 
         // Sets the default value
 
+        return this;
+
     }
 
-    public void unique() {
+    public Sketch unique() {
 
         // Makes the column unique.
 
+        return this;
+
     }
 
-    public void index() {
+    public Sketch index() {
 
         // Makes the column an index.
 
+        return this;
+
     }
 
-    public void length(int length) {
+    public Sketch length(int length) {
 
         // The size of the specified column.
 
+        return this;
+
     }
 
-    public void comment(String comment) {
+    public Sketch comment(String comment) {
 
         // Adds a comment to the database table.
 
+        return this;
+
     }
 
+    public String getColumnName() {
+        return columnName;
+    }
+
+    public String getColumnType() {
+        return columnType;
+    }
 
 }

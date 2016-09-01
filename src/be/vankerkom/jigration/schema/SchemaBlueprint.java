@@ -1,6 +1,6 @@
 package be.vankerkom.jigration.schema;
 
-import be.vankerkom.jigration.Builders.Builder;
+import be.vankerkom.jigration.builders.Builder;
 
 /**
  * Created by Daan Vankerkom on 1/09/2016.
@@ -14,24 +14,36 @@ public class SchemaBlueprint extends Blueprint {
     public void create() {
 
         // Creates a new table.
-        String createCommand = builder.getDialect().createTable(tableName, false);
-        System.out.println("SQL >> " + createCommand);
+        String createCommand = "";
+        try {
+            createCommand = builder.getDialect().createTable(this, false);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        sql.append(createCommand);
 
     }
 
     public void alter() {
 
         // Alters an existing table.
-        String alterCommand = builder.getDialect().alterTable(tableName);
-        System.out.println("SQL >> " + alterCommand);
+        String alterCommand = builder.getDialect().alterTable(this);
+        sql.append(alterCommand);
 
     }
 
     public void drop(boolean ifExists) {
 
         // Drops an existing table.
-        String dropCommand = builder.getDialect().dropTable(tableName, ifExists);
-        System.out.println("SQL >> " + dropCommand);
+        String dropCommand = "";
+        try {
+            dropCommand = builder.getDialect().dropTable(this, ifExists);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        sql.append(dropCommand);
 
     }
 

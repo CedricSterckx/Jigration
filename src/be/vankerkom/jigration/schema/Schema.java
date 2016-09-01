@@ -1,6 +1,6 @@
 package be.vankerkom.jigration.schema;
 
-import be.vankerkom.jigration.Builders.Builder;
+import be.vankerkom.jigration.builders.Builder;
 
 /**
  * Created by Daan Vankerkom on 1/09/2016.
@@ -10,13 +10,7 @@ public class Schema {
     private static Builder builder;
 
     public static boolean hasTable(String tableName) {
-
-        String hasTableQuestion = builder.getDialect().questionTableExists();
-        String currentSchema = builder.getSchemaName();
-        String tablePrefix = builder.getTablePrefix();
-
-        return builder.count(hasTableQuestion, currentSchema, tablePrefix + tableName) > 0;
-
+        return builder.hasTable(tableName);
     }
 
     public static boolean hasColumn(String tableName, String columnName) {
@@ -46,11 +40,25 @@ public class Schema {
 
     }
 
+    public static void edit(String tableName, SchemaBuilder schemaBuilder) {
+
+        SchemaBlueprint blueprint = new SchemaBlueprint(tableName, builder);
+
+        schemaBuilder.forge(blueprint);
+
+        blueprint.alter();
+
+        blueprint.build();
+
+    }
+
     public static void drop(String tableName) {
 
         SchemaBlueprint blueprint = new SchemaBlueprint(tableName, builder);
 
         blueprint.drop(false);
+
+        blueprint.build();
 
     }
 
@@ -59,6 +67,8 @@ public class Schema {
         SchemaBlueprint blueprint = new SchemaBlueprint(tableName, builder);
 
         blueprint.drop(true);
+
+        blueprint.build();
 
     }
 
