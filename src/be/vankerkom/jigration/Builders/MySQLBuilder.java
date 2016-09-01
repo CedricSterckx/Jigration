@@ -1,7 +1,7 @@
-package be.vankerkom.jigration.Builders;
+package be.vankerkom.jigration.builders;
 
-import be.vankerkom.jigration.Dialects.Dialect;
-import be.vankerkom.jigration.Dialects.MySQLDialect;
+import be.vankerkom.jigration.dialects.Dialect;
+import be.vankerkom.jigration.dialects.MySQLDialect;
 
 /**
  * Created by Daan Vankerkom on 1/09/2016.
@@ -16,4 +16,14 @@ public class MySQLBuilder extends Builder {
         super(MYSQL_DRIVER_NAME, MYSQL_DIALECT, String.format(MYSQL_CONNECTION_STRING, host, schema, username, password), schema);
     }
 
+    @Override
+    public boolean hasTable(String tableName) {
+
+        String hasTableQuestion = getDialect().questionTableExists();
+        String currentSchema = getSchemaName();
+        String tablePrefix = getTablePrefix();
+
+        return count(hasTableQuestion, currentSchema, tablePrefix + tableName) > 0;
+
+    }
 }

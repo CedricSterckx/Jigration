@@ -1,4 +1,4 @@
-package be.vankerkom.jigration.Dialects;
+package be.vankerkom.jigration.dialects;
 
 /**
  * Created by Daan Vankerkom on 1/09/2016.
@@ -8,6 +8,10 @@ public class MySQLDialect extends Dialect {
     public MySQLDialect() {
         supportsCreateTableIf = true;
         supportsDropTableIf = true;
+
+        typesResolver.put("string", "varchar(%d)");
+        typesResolver.put("integer", "integer");
+        typesResolver.put("text", "text");
     }
 
     @Override

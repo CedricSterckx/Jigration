@@ -1,13 +1,13 @@
-package be.vankerkom.jigration.Builders;
+package be.vankerkom.jigration.builders;
 
-import be.vankerkom.jigration.Dialects.Dialect;
+import be.vankerkom.jigration.dialects.Dialect;
 
 import java.sql.*;
 
 /**
  * Created by Daan Vankerkom on 1/09/2016.
  */
-public class Builder {
+public abstract class Builder {
 
     // Represents the connection between the application and the database.
 
@@ -19,6 +19,15 @@ public class Builder {
     private String tablePrefix = "";
 
     private Connection connection;
+
+    public boolean hasTable(String tableName) {
+
+        String hasTableQuestion = getDialect().questionTableExists();
+        String tablePrefix = getTablePrefix();
+
+        return count(hasTableQuestion, tablePrefix + tableName) > 0;
+
+    }
 
     public Builder(String driverClass, Dialect dialect, String connectionString, String schemaName) throws Exception {
 
@@ -50,13 +59,6 @@ public class Builder {
 
     }
 
-    public boolean build() {
-
-        // Build the migrations on in the database.
-
-        return true;
-    }
-
     public int count(String query, Object... parameters) {
 
         int result = 0;
@@ -71,7 +73,7 @@ public class Builder {
             }
 
             ResultSet resultSet = statement.executeQuery();
-            resultSet.first();
+            resultSet.next();
             result = resultSet.getInt(1);
             resultSet.close();
 
@@ -81,6 +83,20 @@ public class Builder {
 
 
         return result;
+    }
+
+    public void query(String sqlCommand) {
+
+        try {
+
+            Statement statement = connection.createStatement();
+            statement.execute(sqlCommand);
+            statement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public Dialect getDialect() {
